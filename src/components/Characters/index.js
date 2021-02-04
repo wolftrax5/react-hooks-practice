@@ -5,14 +5,14 @@ export const Characters = () => {
     const [characters, setCharacters] = useState([])
 
     useEffect(()=> {
-        fetch('http://intergalacticdb.me/api/characters')
+        fetch('https://swapi.dev/api/people/')
             .then(response => response.json())
             .then(data => setCharacters(data.results))
     }, [])
 
     return(
         <div className='characters'>
-        {characters.map((character) => <h2>{character.name}</h2>)}
+        {characters.map((character, i) => <h2 key={i}>{character.name}</h2>)}
         </div>
     )
 }
