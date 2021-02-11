@@ -11,7 +11,7 @@ export const Header = () => {
 
     return(
         <div className='Header'>
-            <h1>React Hooks</h1>
+            <h1>Marvelopoliz</h1>
             <SwitchButton switchFunc={handleClick}  value={theme} />
         </div>
     );
