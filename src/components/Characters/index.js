@@ -1,13 +1,7 @@
-import React , { useState, useEffect, useReducer } from 'react'
-import md5 from 'md5';
+import React , { useReducer } from 'react'
+import  { useCharactersList }from '../hooks/useFetchData'
 
-const timestamp = '1';
-const PrivateKey = process.env.REACT_APP_API_MARVEL_KEY_PRIVATE
-const PublicKey = process.env.REACT_APP_API_MARVEL_KEY_PUBLIC
-const URL = process.env.REACT_APP_API_MARVEL_URL
-const temphas= `${timestamp}${PrivateKey}${PublicKey}`
- // md5(ts+privateKey+publicKey)
-const Apihash = md5(temphas)
+
 const initialState = {
     favorites: []
 }
@@ -25,15 +19,10 @@ const favoriteReducer = (state, action) => {
 }
 
 export const Characters = () => {
-    const [characters, setCharacters] = useState([])
 
     const [reducerState, dispatch] = useReducer(favoriteReducer, initialState);
 
-    useEffect(()=> {
-        fetch(`${URL}characters?ts=${timestamp}&apikey=${PublicKey}&hash=${Apihash}`)
-            .then(response => response.json())
-            .then(response => setCharacters(response.data.results))
-    }, [])
+    const { characerListState, loading } = useCharactersList();
 
     const handlerClick = (favorite) => {
         dispatch({type: 'ADD_TO_FAVORITE', payload: favorite })
@@ -41,12 +30,13 @@ export const Characters = () => {
 
     return(
         <div className='characters'>
+        {`${loading}`}
         {reducerState.favorites.map((fav) => (
             <li key={fav.id+fav.name}>
                     {fav.name}
             </li>
         ))}
-        {characters.map((character) => (
+        {characerListState.charactersList.map((character) => (
             <div key={character.id}
                 className='characters__detail'>
                 <h2 >{character.name}</h2>
