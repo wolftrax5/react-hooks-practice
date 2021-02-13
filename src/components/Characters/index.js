@@ -1,5 +1,5 @@
 import React , { useReducer } from 'react'
-import  { useCharactersList }from '../hooks/useFetchData'
+import  { useCharactersList }from '../../hooks/useFetchData'
 
 
 const initialState = {
@@ -22,7 +22,7 @@ export const Characters = () => {
 
     const [reducerState, dispatch] = useReducer(favoriteReducer, initialState);
 
-    const { characerListState, loading } = useCharactersList();
+    const { characerListState, loading , showFixed} = useCharactersList();
 
     const handlerClick = (favorite) => {
         dispatch({type: 'ADD_TO_FAVORITE', payload: favorite })
@@ -40,6 +40,7 @@ export const Characters = () => {
             <div key={character.id}
                 className='characters__detail'>
                 <h2 >{character.name}</h2>
+                {`${showFixed}`}
                 <img loading="lazy" src={`${character.thumbnail.path}.${character.thumbnail.extension}`} alt={character.name}/>
                 <button
                     type='button'
