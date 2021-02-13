@@ -32,20 +32,44 @@ const characterListReducer = (state, action) => {
                 charactersList: results,
                 count,
                 total,
+                offset: count
             }
-        case 'ADD_TO_FAVORITE':
+        case 'ADD_MORE_ITEMS':{
+            const { results, count} = action.payload
             return {
                 ...state,
-                favorites:[...state.favorites, action.payload]
-            };
-            default:
-                return state;
+                charactersList: [...state.charactersList, ...results],
+                offset: state.offset + count
+            }
+        }
+        default:
+            return state;
     }
 }
 
 export const useCharactersList = () => {
     const [characerListState, dispatch] = useReducer(characterListReducer, initialState);
     const [loading, setLoading] = useState(false)
+    const [showFixed, setShowFixed] = useState(false)
+
+    useEffect(() => {
+        const onScroll = e => {
+            const newShowFixed = window.scrollY > 200
+            showFixed !== newShowFixed && setShowFixed(newShowFixed)
+        }
+        document.addEventListener('scroll', onScroll)
+        // cleaning the listener
+        return () => document.removeEventListener('scroll', onScroll)
+    }, [showFixed])
+
+    const loadMore = (limit = 10) => {
+        setLoading(true)
+        fetch(`${URL}characters?ts=${TIMESTAMP}&apikey=${PUBLICKEY}&hash=${APIHASH}&limit=${limit}&offset=${characerListState.offset}`)
+            .then(response => response.json())
+            .then(response => dispatch({type:'ADD_MORE_ITEMS', payload: response.data}))
+            .catch(err => console.error(err))
+            .finally(() => setLoading(false))
+    }
 
     useEffect(()=> {
         setLoading(true)
@@ -56,5 +80,6 @@ export const useCharactersList = () => {
             .finally(() => setLoading(false))
     }, [])
 
-    return { characerListState, loading }
+
+    return { characerListState, loading, loadMore , showFixed}
 }
