@@ -1,4 +1,4 @@
-import React , { useReducer } from 'react'
+import React , { useMemo, useReducer , useState} from 'react'
 import  { useCharactersList }from '../../hooks/useFetchData'
 
 
@@ -27,6 +27,20 @@ export const Characters = () => {
     const handlerClick = (favorite) => {
         dispatch({type: 'ADD_TO_FAVORITE', payload: favorite })
     }
+    const [search, setSearch] = useState('');
+
+    const handlerSearch = (event) => {
+        setSearch(event.target.value)
+    }
+    /*
+    const filteredCharacters = characerListState.charactersList.filter((character) => {
+        return character.name.toLowerCase().includes(search.toLowerCase())
+    })
+    */
+    const  filteredCharacters = useMemo(() =>
+    characerListState.charactersList.filter((character) => {
+        return character.name.toLowerCase().includes(search.toLowerCase())
+    }), [characerListState.charactersList, search])
 
     return(
         <div className='characters'>
@@ -36,7 +50,10 @@ export const Characters = () => {
                     {fav.name}
             </li>
         ))}
-        {characerListState.charactersList.map((character) => (
+        <div>
+            <input type="text" value={search} onChange ={handlerSearch} />
+        </div>
+        {filteredCharacters.map((character) => (
             <div key={character.id}
                 className='characters__detail'>
                 <h2 >{character.name}</h2>
