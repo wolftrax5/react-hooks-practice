@@ -1,6 +1,6 @@
-import React , { useMemo, useReducer , useState, useRef} from 'react'
+import React , { useMemo, useReducer , useState, useRef, useCallback} from 'react'
 import  { useCharactersList }from '../../hooks/useFetchData'
-
+import { Search } from '../Search';
 
 const initialState = {
     favorites: []
@@ -31,9 +31,12 @@ export const Characters = () => {
     }
     const [search, setSearch] = useState('');
 
-    const handlerSearch = () => {
+    /*const handlerSearch = () => {
         setSearch(serchInput.current.value)
-    }
+    }*/
+    const handlerSearch = useCallback(()=>{
+        setSearch(serchInput.current.value)
+    }, [])
     /*
     const filteredCharacters = characerListState.charactersList.filter((character) => {
         return character.name.toLowerCase().includes(search.toLowerCase())
@@ -52,9 +55,7 @@ export const Characters = () => {
                     {fav.name}
             </li>
         ))}
-        <div>
-            <input type="text" value={search} onChange ={handlerSearch} ref={serchInput}/>
-        </div>
+        <Search search={search}  serchInput={serchInput} handlerSearch={handlerSearch}/>
         {filteredCharacters.map((character) => (
             <div key={character.id}
                 className='characters__detail'>
