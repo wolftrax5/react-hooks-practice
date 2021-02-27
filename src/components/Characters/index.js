@@ -1,5 +1,5 @@
 import React , { useMemo, useReducer , useState, useRef, useCallback} from 'react'
-import  { useCharactersList }from '../../hooks/useFetchData'
+import  { useCharactersList }from '../../hooks/useCharactersList'
 import { Search } from '../Search';
 
 const initialState = {
@@ -31,17 +31,10 @@ export const Characters = () => {
     }
     const [search, setSearch] = useState('');
 
-    /*const handlerSearch = () => {
-        setSearch(serchInput.current.value)
-    }*/
     const handlerSearch = useCallback(()=>{
         setSearch(serchInput.current.value)
     }, [])
-    /*
-    const filteredCharacters = characerListState.charactersList.filter((character) => {
-        return character.name.toLowerCase().includes(search.toLowerCase())
-    })
-    */
+
     const  filteredCharacters = useMemo(() =>
     characerListState.charactersList.filter((character) => {
         return character.name.toLowerCase().includes(search.toLowerCase())
