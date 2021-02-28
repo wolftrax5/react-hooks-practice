@@ -22,7 +22,7 @@ export const Characters = () => {
 
     const [reducerState, dispatch] = useReducer(favoriteReducer, initialState);
 
-    const { characerListState, loading , showFixed} = useCharactersList();
+    const { characerListState, loading } = useCharactersList();
 
     const  serchInput = useRef('')
 
@@ -53,7 +53,6 @@ export const Characters = () => {
             <div key={character.id}
                 className='characters__detail'>
                 <h2 >{character.name}</h2>
-                {`${showFixed}`}
                 <img loading="lazy" src={`${character.thumbnail.path}.${character.thumbnail.extension}`} alt={character.name}/>
                 <button
                     type='button'

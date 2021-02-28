@@ -50,17 +50,6 @@ const characterListReducer = (state, action) => {
 export const useCharactersList = () => {
     const [characerListState, dispatch] = useReducer(characterListReducer, initialState);
     const [loading, setLoading] = useState(false)
-    const [showFixed, setShowFixed] = useState(false)
-
-    useEffect(() => {
-        const onScroll = e => {
-            const newShowFixed = window.scrollY > 200
-            showFixed !== newShowFixed && setShowFixed(newShowFixed)
-        }
-        document.addEventListener('scroll', onScroll)
-        // cleaning the listener
-        return () => document.removeEventListener('scroll', onScroll)
-    }, [showFixed])
 
     const loadMore = (limit = 10) => {
         setLoading(true)
@@ -81,5 +70,5 @@ export const useCharactersList = () => {
     }, [])
 
 
-    return { characerListState, loading, loadMore , showFixed}
+    return { characerListState, loading, loadMore}
 }
