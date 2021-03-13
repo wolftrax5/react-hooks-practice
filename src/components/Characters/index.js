@@ -53,7 +53,7 @@ export const Characters = () => {
             <div key={character.id}
                 className='characters__detail'>
                 <h2 >{character.name}</h2>
-                <img loading="lazy" src={`${character.thumbnail.path}.${character.thumbnail.extension}`} alt={character.name}/>
+                <img style={{width:'200px', height: '200px'}} loading="lazy" src={`${character.thumbnail.path}.${character.thumbnail.extension}`} alt={character.name}/>
                 <button
                     type='button'
                     onClick={()=>handlerClick(character)}>Add to Fav</button>
